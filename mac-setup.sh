@@ -32,8 +32,8 @@ preferences_pane_anchor() { # open 'System Preferences' is specified pane and ta
 get_sudo_password() {
     # ask for the administrator password upfront, for commands that require `sudo`
     clear
-    bold_echo 'Insert the "sudo" password now (will not be echoed).'
-    info "This is needed so that the installation can proceed with as little interaction as possible"
+    bold_echo 'Insert the `sudo` password now (will not be echoed).'
+    info "This is needed so that the installation can proceed with as little interaction as possible."
     until sudo -n true 2>/dev/null; do # if password is wrong, keep asking
         read -r -s -p 'Password: ' sudo_password
         echo
@@ -44,11 +44,13 @@ get_sudo_password() {
 }
 
 install_brew() {
+    info 'Installing XCode Command Line Tools'
     xcode-select --install
-    read -n 1 -s -r -p "Press any key after installing the XCode CLT"
+    read -n 1 -s -r -p "Press any key after the install completes. \n"
     renew_sudo
-
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    
+    info 'Installing `brew`'
+    NONINTERACTIVE=true /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 }
 
 install_brew_stuff() {
