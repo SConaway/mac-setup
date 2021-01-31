@@ -46,7 +46,7 @@ get_sudo_password() {
 install_brew() {
     info 'Installing XCode Command Line Tools'
     xcode-select --install
-    read -n 1 -s -r -p "Press any key after the install completes. \n"
+    read -n 1 -s -r -p "Press any key after the install completes."
     renew_sudo
     
     info 'Installing `brew`'
