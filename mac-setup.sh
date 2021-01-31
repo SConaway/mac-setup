@@ -60,8 +60,9 @@ install_brew() {
     info 'Installing XCode Command Line Tools'
     xcode-select --install
     read -n 1 -s -r -p "Press any key after the install completes."
+    echo
     renew_sudo
-    
+
     info 'Installing `brew`'
     NONINTERACTIVE=true /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 }
