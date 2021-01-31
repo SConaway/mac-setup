@@ -29,6 +29,19 @@ preferences_pane_anchor() { # open 'System Preferences' is specified pane and ta
         end tell" &>/dev/null
 }
 
+request() { # output a message and open an app
+    local message="${1}"
+    local app="${2}"
+    shift 2
+
+    echo "$(tput setaf 5)•$(tput sgr0) ${message}"
+    open -Wa "${app}" --args "$@" # don't continue until app closes
+}
+
+request_preferences() { # 'request' for System Preferences
+    request "${1}" 'System Preferences'
+}
+
 get_sudo_password() {
     # ask for the administrator password upfront, for commands that require `sudo`
     clear
@@ -58,10 +71,11 @@ install_brew_stuff() {
 }
 
 install_ruby_gems() {
-    gem install bundler cocoapods maid travis xcpretty
+    gem install bundler cocoapods xcpretty
 }
 
-configure_zsh() { # make zsh default shell
+configure_zsh() {
+    # make zsh default shell
     sudo -S sh -c 'echo "/usr/local/bin/zsh" >> /etc/shells' <<<"${sudo_password}" 2>/dev/null
     sudo -S chsh -s '/usr/local/bin/zsh' "${USER}" <<<"${sudo_password}" 2>/dev/null
 
@@ -77,7 +91,6 @@ link_airport() {
 }
 
 os_customize() {
-    # intial message
     clear
 
     echo "This script will help configure the rest of macOS. It is divided in two parts:
@@ -251,7 +264,7 @@ os_customize() {
     defaults write com.apple.ActivityMonitor SortDirection -int 0
 
     info 'Show the ~/Library folder, /Library, and /Volumes, and hide Applications, Documents, Music, Pictures, and Public.'
-    chflags hidden "${HOME}/Applications"
+    [ -d "${HOME}/Applications" ] && chflags hidden "${HOME}/Applications"
     chflags nohidden "${HOME}/Library"
     chflags hidden "${HOME}/Documents"
     chflags hidden "${HOME}/Music"
