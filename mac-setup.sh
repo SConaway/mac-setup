@@ -64,6 +64,11 @@ install_ruby_gems() {
 configure_zsh() { # make zsh default shell
     sudo -S sh -c 'echo "/usr/local/bin/zsh" >> /etc/shells' <<<"${sudo_password}" 2>/dev/null
     sudo -S chsh -s '/usr/local/bin/zsh' "${USER}" <<<"${sudo_password}" 2>/dev/null
+
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+
 }
 
 link_airport() {
